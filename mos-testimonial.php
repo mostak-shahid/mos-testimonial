@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Mos Plugin
+Plugin Name: Mos Testimonial
 Description: Base of future plugin
 Version: 0.0.1
 Author: Md. Mostak Shahid
