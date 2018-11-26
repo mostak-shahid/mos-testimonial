@@ -24,7 +24,7 @@ $mos_testimonial_option = get_option( 'mos_testimonial_option' );
 $plugin = plugin_basename(MOS_TESTIMONIAL_FILE); 
 require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-functions.php' );
 require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-settings.php' );
-require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-settings' );
+require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-post-types' );
 
 require_once('plugins/update/plugin-update-checker.php');
 $pluginInit = Puc_v4_Factory::buildUpdateChecker(
