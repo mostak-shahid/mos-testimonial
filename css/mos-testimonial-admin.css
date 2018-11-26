@@ -1,0 +1,26 @@
+.mos-testimonial-wrapper .nav.nav-tabs {
+    margin-bottom: 0;
+}
+.mos-testimonial-wrapper .nav.nav-tabs li {
+    display: inline-block;
+    margin-bottom: 0;
+}
+.mos-testimonial-wrapper .nav.nav-tabs li a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    background-color: #eaeaea;
+}
+.mos-testimonial-wrapper .nav.nav-tabs li.active a {
+    background-color: #ffffff;
+    box-shadow: none;
+    outline: none;
+}
+.mos-testimonial-wrapper .tab-con {
+    display: none;
+    padding: 30px;
+    background-color: #ffffff;
+}
+.mos-testimonial-wrapper .tab-con.active {
+    display: block;
+}
