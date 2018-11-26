@@ -6,7 +6,7 @@ function mos_testimonial_admin_enqueue_scripts(){
 	var_dump($typenow); //post type(If under post type)
 	var_dump($page); //mos_testimonial_settings(If under settings)*/
 	
-	if ($pagenow == 'options-general.php' AND $page == 'mos_testimonial_settings') {
+	if ($pagenow == 'edit.php' AND $typenow == 'testimonial') {
 		wp_enqueue_style( 'mos-testimonial-admin', plugins_url( 'css/mos-testimonial-admin.css', __FILE__ ) );
 
 		//wp_enqueue_media();
@@ -82,3 +82,113 @@ function mos_testimonial_scripts() {
 	}
 }
 add_action( 'wp_footer', 'mos_testimonial_scripts', 100 );
+
+
+function testimonial_func( $atts = array(), $content = '' ) {
+
+	$html = '';
+	$atts = shortcode_atts( array(
+		'limit'				=> '-1',
+		'offset'			=> 0,
+		'category'			=> '',
+		'tag'				=> '',
+		'orderby'			=> '',
+		'order'				=> '',
+		'container'			=> 0,
+		'container_class'	=> '',
+		'class'				=> '',
+		'singular'			=> 0,
+		'pagination'		=> 0,
+		'view'				=> 'block', //carousel
+	), $atts, 'testimonial' );
+
+	$cat = ($atts['category']) ? preg_replace('/\s+/', '', $atts['category']) : '';
+	$tag = ($atts['tag']) ? preg_replace('/\s+/', '', $atts['tag']) : '';
+
+	$args = array( 
+		'post_type' 		=> 'qa',
+		'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
+	);
+	$args['posts_per_page'] = $atts['limit'];
+	if ($atts['offset']) $args['offset'] = $atts['offset'];
+
+	if ($atts['category'] OR $atts['tag']) {
+		$args['tax_query'] = array();
+		if ($atts['category'] AND $atts['tag']) {
+			$args['tax_query']['relation'] = 'OR';
+		}
+		if ($atts['category']) {
+			$args['tax_query'][] = array(
+					'taxonomy' => 'testimonial-category',
+					'field'    => 'term_id',
+					'terms'    => explode(',', $cat),
+				);
+		}
+		if ($atts['tag']) {
+			$args['tax_query'][] = array(
+					'taxonomy' => 'testimonial-tag',
+					'field'    => 'term_id',
+					'terms'    => explode(',', $tag),
+				);
+		}
+	}
+	if ($atts['orderby']) $args['orderby'] = $atts['orderby'];
+	if ($atts['order']) $args['order'] = $atts['order'];
+	if ($atts['author']) $args['author'] = $atts['author'];
+	if ($atts['view'] == 'carousel') {
+		$con_cls = ' owl-carousel owl-theme';
+	}
+	else {
+		$con_cls = ' ' . $atts['container_class'];
+	}
+	// var_dump($args);
+	// die();
+	$query = new WP_Query( $args );
+	if ( $query->have_posts() ) :
+		$idenfier = rand(10,1000);
+		$n = 0;
+		$html .= '<div id="mos-testimonial-'.$idenfier.'" class="mos-testimonial-container' . $con_cls . '">';
+		while ( $query->have_posts() ) : $query->the_post();
+			
+			$html .= '<div class="mos-testimonial-unit ' . $atts['class'] . '">';
+				$html .= '<div class="mos-testimonial-heading">';
+					$html .= '<h4 class="mos-testimonial-title">';
+						if ($atts['view'] == 'accordion') $data_parent = 'data-parent="#mos-testimonial-'.$idenfier.'"';
+						$href = 'href="javascript:void(0)"';
+						$html .= '<a data-toggle="collapse" '.$data_parent.' '.$href.'>'.get_the_title().'</a>';
+						if ($index)	$html .= '<span class="mos-testimonial-icon-con"><i class="fa '.$slices[0].'"></i> <i class="fa '.$slices[1].'"></i></span>';
+					$html .= '</h4>';
+				$html .= '</div>';
+				if ($atts['view'] != 'block') $html .= '<div id="collapse'.$idenfier.$n.'" class="mos-testimonial-collapse">'; // in
+					$html .= '<div class="mos-testimonial-body">';
+						$html .= mos_testimonial_get_the_content_with_formatting();
+						//$html .= get_the_content();
+					$html .= '</div>';
+				if ($atts['view'] != 'block') $html .= '</div>';				
+			$html .= '</div><!--/.mos-testimonial-unit-->';
+			$in = '';
+			$n++;
+		endwhile;
+		$html .= '</div><!--/.mos-testimonial-container-->';
+		wp_reset_postdata();
+		if ($atts['pagination']) :
+		    $html .= '<div class="pagination-wrapper testimonial-pagination">'; 
+		        $html .= '<nav class="navigation pagination" role="navigation">';
+		            $html .= '<div class="nav-links">'; 
+		            $big = 999999999; // need an unlikely integer
+		            $html .= paginate_links( array(
+		                'base' => str_replace( $big, '%#%', get_pagenum_link( $big ) ),
+		                'format' => '?paged=%#%',
+		                'current' => max( 1, get_query_var('paged') ),
+		                'total' => $query->max_num_pages,
+		                'prev_text'          => __('Prev'),
+		                'next_text'          => __('Next')
+		            ) );
+		            $html .= '</div>';
+		        $html .= '</nav>';
+		    $html .= '</div>';
+		endif;
+	endif;
+	return $html;
+}
+//add_shortcode( 'testimonial', 'testimonial_func' );

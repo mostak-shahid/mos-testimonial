@@ -15,16 +15,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! defined( 'MOS_TESTIMONIAL_FILE' ) ) {
 	define( 'MOS_TESTIMONIAL_FILE', __FILE__ );
 }
-// Define PMF_SETTINGS.
+// Define MOS_TESTIMONIAL_SETTINGS.
 if ( ! defined( 'MOS_TESTIMONIAL_SETTINGS' ) ) {
-  //define( 'MOS_TESTIMONIAL_SETTINGS', admin_url('/edit.php?post_type=post_type&page=plugin_settings') );
-	define( 'MOS_TESTIMONIAL_SETTINGS', admin_url('/options-general.php?page=mos_testimonial_settings') );
+  define( 'MOS_TESTIMONIAL_SETTINGS', admin_url('/edit.php?post_type=testimonial&page=mos_testimonial_settings') );
+	//define( 'MOS_TESTIMONIAL_SETTINGS', admin_url('/options-general.php?page=mos_testimonial_settings') );
 }
 $mos_testimonial_option = get_option( 'mos_testimonial_option' );
 $plugin = plugin_basename(MOS_TESTIMONIAL_FILE); 
 require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-functions.php' );
 require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-settings.php' );
 require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-post-types.php' );
+require_once ( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-taxonomy.php' );
+
+require_once( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'plugins/metabox/init.php');
+require_once( plugin_dir_path( MOS_TESTIMONIAL_FILE ) . 'mos-testimonial-metaboxes.php');
 
 require_once('plugins/update/plugin-update-checker.php');
 $pluginInit = Puc_v4_Factory::buildUpdateChecker(

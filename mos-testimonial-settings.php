@@ -10,17 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" ) {
 }
 
 function mos_testimonial_admin_menu () {
-    //add_submenu_page( 'edit.php?post_type=p_file', 'Settings', 'Settings', 'manage_options', 'mos_testimonial_settings', 'mos_testimonial_admin_page' );
-    add_submenu_page( 'options-general.php', 'Settings', 'Settings', 'manage_options', 'mos_testimonial_settings', 'mos_testimonial_admin_page' );
+    add_submenu_page( 'edit.php?post_type=testimonial', 'Settings', 'Settings', 'manage_options', 'mos_testimonial_settings', 'mos_testimonial_admin_page' );
+    //add_submenu_page( 'options-general.php', 'Settings', 'Settings', 'manage_options', 'mos_testimonial_settings', 'mos_testimonial_admin_page' );
 }
 add_action("admin_menu", "mos_testimonial_admin_menu");
 function mos_testimonial_admin_page () {
-  //$option_prefix = "?post_type=p_file&page=mos_testimonial_settings&tab=";
-  $option_prefix = admin_url() . "/options-general.php?page=mos_testimonial_settings&tab=";
+  $option_prefix = "?post_type=testimonial&page=mos_testimonial_settings&tab=";
+  //$option_prefix = admin_url() . "/options-general.php?page=mos_testimonial_settings&tab=";
   if (@$_GET['tab']) $active_tab = $_GET['tab'];
   elseif (@$_COOKIE['mos_testimonial_active_tab']) $active_tab = $_COOKIE['mos_testimonial_active_tab'];
   else $active_tab = 'dashboard';
-  echo $active_tab;
+  //echo $active_tab;
 	$mos_testimonial_option = get_option( 'mos_testimonial_option' );
 	?>
 	<div class="wrap mos-testimonial-wrapper">
