@@ -10,19 +10,19 @@ function mos_testimonial_metaboxes() {
     $mos_testimonial_details->add_field(array(
         'name' => 'Designation',
         'desc' => __( 'Designation of the author.', 'cmb2' ),
-        'id' => $prefix . 'testimonial_designation',
+        'id' => $prefix . 'designation',
         'type' => 'text'
     ));
     $mos_testimonial_details->add_field(array(
         'name' => 'Website',
         'desc' => __( 'URL of the author.', 'cmb2' ),
-        'id' => $prefix . 'testimonial_url',
+        'id' => $prefix . 'url',
         'type' => 'text'
     ));
     $mos_testimonial_details->add_field( array(
         'name'             => 'Rating',
         'desc'             => 'Select an option',
-        'id' => $prefix . 'testimonial_rating',
+        'id' => $prefix . 'rating',
         'type'             => 'select',
         'show_option_none' => true,
         'options'          => array(
@@ -37,7 +37,7 @@ function mos_testimonial_metaboxes() {
     $mos_testimonial_details->add_field(array(
         'name' => 'Cover Image',
         'desc' => __( 'Cover image of oEmbed.', 'cmb2' ),
-        'id' => $prefix . 'testimonial_image',
+        'id' => $prefix . 'image',
         'type' => 'file',
         'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
         'query_args' => array( 'type' => 'image' ), // Only images attachment
@@ -46,7 +46,7 @@ function mos_testimonial_metaboxes() {
     $mos_testimonial_details->add_field(array(
         'name' => 'oEmbed',
         'desc' => __( 'Enter a youtube, twitter, or instagram URL.', 'cmb2' ),
-        'id'   => $prefix . 'testimonial_oembed',
+        'id'   => $prefix . 'oembed',
         'type' => 'oembed',
     ));
 
