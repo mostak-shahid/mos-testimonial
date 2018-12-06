@@ -36,42 +36,27 @@ function mos_testimonial_admin_page () {
           </div>
         	<div id="mos-testimonial-layouts" class="tab-con <?php if($active_tab == 'layouts') echo 'active';?>">
             <div class="gruop-container">
+            <?php 
+            global $mos_testimonial_option;
+            foreach ($mos_testimonial_option['template'] as $key => $value) : ?>
               <div class="group-unit">
                 <table border="1">
-                  <caption>template-1</caption>
+                  <caption>template-<?php echo $key ?></caption>
                   <tr>
-                    <td colspan="3" valign="middle">&nbsp;</td>
+                    <td colspan="3" valign="middle"><?php if ($value['top_con']) echo $value['top_con']; else echo '&nbsp;'; ?></td>
                   </tr>
                   <tr>
-                    <td valign="middle">&nbsp;</td>
-                    <td valign="middle">
-                    testimonial_image | testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating
-                    </td>
-                    <td valign="middle">&nbsp;</td>
+                    <td valign="middle"><?php if ($value['mid_lef_con']) echo $value['mid_lef_con']; else echo '&nbsp;'; ?></td>
+                    <td valign="middle"><?php if ($value['mid_cen_con']) echo $value['mid_cen_con']; else echo '&nbsp;'; ?></td>
+                    <td valign="middle"><?php if ($value['mid_rig_con']) echo $value['mid_rig_con']; else echo '&nbsp;'; ?></td>
                   </tr>
                   <tr>
-                    <td colspan="3" valign="middle">&nbsp;</td>
+                    <td colspan="3" valign="middle"><?php if ($value['bot_con']) echo $value['bot_con']; else echo '&nbsp;'; ?></td>
                   </tr>
                 </table>  
               </div>
-          		<div class="group-unit">
-                <table border="1">
-                  <caption>template-2</caption>
-                  <tr>
-                    <td colspan="3" valign="middle">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td valign="middle">testimonial_image</td>
-                    <td valign="middle">
-                    testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating
-                    </td>
-                    <td valign="middle">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td colspan="3" valign="middle">&nbsp;</td>
-                  </tr>
-                </table>  
-              </div>
+            <?php endforeach; ?>
+              <input type="hidden" value="<?php echo $key + 1 ?>">
             </div>
           </div>
           <div id="mos-testimonial-scripts" class="tab-con <?php if($active_tab == 'scripts') echo 'active';?>">

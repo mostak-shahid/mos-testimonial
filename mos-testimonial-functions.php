@@ -85,7 +85,7 @@ add_action( 'wp_footer', 'mos_testimonial_scripts', 100 );
 
 
 function testimonial_func( $atts = array(), $content = '' ) {
-
+	global $mos_testimonial_option;
 	$html = '';
 	$atts = shortcode_atts( array(
 		'limit'				=> '-1',
@@ -143,8 +143,13 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	else {
 		$con_cls = '' ;
 	}
-	// var_dump($args);
-	// die();
+	$template_slice = $slices = explode("-",trim($atts['template']));
+	$identity = $template_slice[1];
+	$top_con = $mos_testimonial_option['template'][$identity]['top_con'];
+	$mid_lef_con = $mos_testimonial_option['template'][$identity]['mid_lef_con'];
+	$mid_cen_con = $mos_testimonial_option['template'][$identity]['mid_cen_con'];
+	$mid_right_con = $mos_testimonial_option['template'][$identity]['mid_right_con'];
+	$bot_con = $mos_testimonial_option['template'][$identity]['bot_con'];
 	$query = new WP_Query( $args );
 	if ( $query->have_posts() ) :
 		$idenfier = rand(10,1000);
@@ -155,10 +160,10 @@ function testimonial_func( $atts = array(), $content = '' ) {
 			$html .= '<div class="top">'.$top_con.'</div>';
 			$html .= '<div class="middle">';
 			$html .= '<div class="left">'.$mid_lef_con.'</div>';
-			$html .= '<div class="center">'.$mid_cen_con.'</div>';
+			$html .= '<div class="center">'.testimonial_print ( $mid_cen_con, get_the_ID() ).'</div>';
 			$html .= '<div class="right">'.$mid_right_con.'</div>';
-			$html .= '<div class="bottom">'.$bot_con.'</div>';
 			$html .= '</div>';
+			$html .= '<div class="bottom">'.$bot_con.'</div>';
 			$html .= '</div>';
 
 		endwhile;
@@ -186,3 +191,38 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	return $html;
 }
 add_shortcode( 'testimonials', 'testimonial_func' );
+
+
+//testimonial_print ('testimonial_content|testimonial_video|testimonial_title', 150);
+function testimonial_print ($elements = '', $post_id) {
+	$output = '';
+	$n = 1;
+	//$default_elements = array( "testimonial_image", "testimonial_content", "testimonial_video", "testimonial_title", "testimonial_designation", "testimonial_rating");
+	$elements = str_replace(' ', '', $elements);
+	$slices = explode("|",$elements);
+	foreach ($slices as $value) {
+		if ($value == 'testimonial_title') {
+			$link = get_post_meta( $post_id, '_mos_testimonial_designation', true );
+			$output .= '<h3 class="testimonial-title">';
+			if ($link) $output .= '<a href="'.$link.'">';
+			$output .= get_the_title( $post_id );
+			if ($link) $output .= '</a>';
+			$output .= '</h3>'; 
+		}
+		elseif ($value == 'testimonial_content') {
+			$content_post = get_post($post_id);
+			$content = $content_post->post_content;
+			$content = apply_filters('the_content', $content);
+			$content = str_replace(']]>', ']]&gt;', $content);
+			$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
+		} 
+		elseif ($value == 'testimonial_designation') {			
+			$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
+		} 
+		else {
+			$output .= '<span class="custom-ele-'.$n.'">'.$value.'</span>'; 
+		}
+		$n++; 
+	}
+	return $output;
+}
