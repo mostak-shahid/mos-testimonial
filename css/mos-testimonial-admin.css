@@ -17,10 +17,19 @@
     outline: none;
 }
 .mos-testimonial-wrapper .tab-con {
-    display: none;
     padding: 30px;
     background-color: #ffffff;
 }
-.mos-testimonial-wrapper .tab-con.active {
-    display: block;
+.gruop-container {
+    display: table;
+    width: 100%;
+}
+.group-unit {
+    width: 100%;
+    max-width: 400px;
+    float: left;
+    padding: 0 5px; 
+}
+.group-unit td {
+    min-width: 100px;
 }

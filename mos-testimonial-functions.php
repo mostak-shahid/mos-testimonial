@@ -100,13 +100,15 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		'singular'			=> 0,
 		'pagination'		=> 0,
 		'view'				=> 'block', //carousel
-	), $atts, 'testimonial' );
+		'grid'				=> 1,
+		'template'			=> 'template-1',
+	), $atts, 'testimonials' );
 
 	$cat = ($atts['category']) ? preg_replace('/\s+/', '', $atts['category']) : '';
 	$tag = ($atts['tag']) ? preg_replace('/\s+/', '', $atts['tag']) : '';
 
 	$args = array( 
-		'post_type' 		=> 'qa',
+		'post_type' 		=> 'testimonial',
 		'paged' => get_query_var('paged') ? get_query_var('paged') : 1,
 	);
 	$args['posts_per_page'] = $atts['limit'];
@@ -139,39 +141,31 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		$con_cls = ' owl-carousel owl-theme';
 	}
 	else {
-		$con_cls = ' ' . $atts['container_class'];
+		$con_cls = '' ;
 	}
 	// var_dump($args);
 	// die();
 	$query = new WP_Query( $args );
 	if ( $query->have_posts() ) :
 		$idenfier = rand(10,1000);
-		$n = 0;
-		$html .= '<div id="mos-testimonial-'.$idenfier.'" class="mos-testimonial-container' . $con_cls . '">';
-		while ( $query->have_posts() ) : $query->the_post();
-			
-			$html .= '<div class="mos-testimonial-unit ' . $atts['class'] . '">';
-				$html .= '<div class="mos-testimonial-heading">';
-					$html .= '<h4 class="mos-testimonial-title">';
-						if ($atts['view'] == 'accordion') $data_parent = 'data-parent="#mos-testimonial-'.$idenfier.'"';
-						$href = 'href="javascript:void(0)"';
-						$html .= '<a data-toggle="collapse" '.$data_parent.' '.$href.'>'.get_the_title().'</a>';
-						if ($index)	$html .= '<span class="mos-testimonial-icon-con"><i class="fa '.$slices[0].'"></i> <i class="fa '.$slices[1].'"></i></span>';
-					$html .= '</h4>';
-				$html .= '</div>';
-				if ($atts['view'] != 'block') $html .= '<div id="collapse'.$idenfier.$n.'" class="mos-testimonial-collapse">'; // in
-					$html .= '<div class="mos-testimonial-body">';
-						$html .= mos_testimonial_get_the_content_with_formatting();
-						//$html .= get_the_content();
-					$html .= '</div>';
-				if ($atts['view'] != 'block') $html .= '</div>';				
-			$html .= '</div><!--/.mos-testimonial-unit-->';
-			$in = '';
-			$n++;
+		$html .= '<div id="mos-testimonial-'.$idenfier.'" class="mos-testimonial-container' . $con_cls . $atts['container_class'] . '">';
+		while ( $query->have_posts() ) : $query->the_post();			
+
+			$html .= '<div class="testimonial-unit">';
+			$html .= '<div class="top">'.$top_con.'</div>';
+			$html .= '<div class="middle">';
+			$html .= '<div class="left">'.$mid_lef_con.'</div>';
+			$html .= '<div class="center">'.$mid_cen_con.'</div>';
+			$html .= '<div class="right">'.$mid_right_con.'</div>';
+			$html .= '<div class="bottom">'.$bot_con.'</div>';
+			$html .= '</div>';
+			$html .= '</div>';
+
 		endwhile;
 		$html .= '</div><!--/.mos-testimonial-container-->';
+
 		wp_reset_postdata();
-		if ($atts['pagination']) :
+		if ($atts['pagination'] AND $atts['view'] = 'block') :
 		    $html .= '<div class="pagination-wrapper testimonial-pagination">'; 
 		        $html .= '<nav class="navigation pagination" role="navigation">';
 		            $html .= '<div class="nav-links">'; 
@@ -191,4 +185,4 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	endif;
 	return $html;
 }
-//add_shortcode( 'testimonial', 'testimonial_func' );
+add_shortcode( 'testimonials', 'testimonial_func' );

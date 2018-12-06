@@ -43,8 +43,17 @@ add_action('admin_init', 'mos_testimonial_redirect');
  
 function mos_testimonial_activate() {
     $mos_testimonial_option = array();
-    // $mos_testimonial_option['mos_login_type'] = 'basic';
-    // update_option( 'mos_testimonial_option', $mos_testimonial_option, false );
+    $mos_testimonial_option['template'][1]['top_con'] = '';
+    $mos_testimonial_option['template'][1]['mid_lef_con'] = '';
+    $mos_testimonial_option['template'][1]['mid_cen_con'] = 'testimonial_image | testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
+    $mos_testimonial_option['template'][1]['mid_rig_con'] = '';
+    $mos_testimonial_option['template'][1]['bot_con'] = '';
+    $mos_testimonial_option['template'][2]['top_con'] = '';
+    $mos_testimonial_option['template'][2]['mid_lef_con'] = 'testimonial_image';
+    $mos_testimonial_option['template'][2]['mid_cen_con'] = 'testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
+    $mos_testimonial_option['template'][2]['mid_rig_con'] = '';
+    $mos_testimonial_option['template'][2]['bot_con'] = '';
+    update_option( 'mos_testimonial_option', $mos_testimonial_option, false );
     add_option('mos_testimonial_do_activation_redirect', true);
 }
  

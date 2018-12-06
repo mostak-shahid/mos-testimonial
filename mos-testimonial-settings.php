@@ -18,7 +18,7 @@ function mos_testimonial_admin_page () {
   $option_prefix = "?post_type=testimonial&page=mos_testimonial_settings&tab=";
   //$option_prefix = admin_url() . "/options-general.php?page=mos_testimonial_settings&tab=";
   if (@$_GET['tab']) $active_tab = $_GET['tab'];
-  elseif (@$_COOKIE['mos_testimonial_active_tab']) $active_tab = $_COOKIE['mos_testimonial_active_tab'];
+  elseif (@$_COOKIE['testimonial_active_tab']) $active_tab = $_COOKIE['testimonial_active_tab'];
   else $active_tab = 'dashboard';
   //echo $active_tab;
 	$mos_testimonial_option = get_option( 'mos_testimonial_option' );
@@ -27,11 +27,52 @@ function mos_testimonial_admin_page () {
         <h1><?php _e("Settings") ?></h1>
         <ul class="nav nav-tabs">
             <li class="tab-nav <?php if($active_tab == 'dashboard') echo 'active';?>"><a data-id="dashboard" href="<?php echo $option_prefix;?>dashboard">Dashboard</a></li>
+            <li class="tab-nav <?php if($active_tab == 'layouts') echo 'active';?>"><a data-id="layouts" href="<?php echo $option_prefix;?>layouts">Layouts</a></li>
             <li class="tab-nav <?php if($active_tab == 'scripts') echo 'active';?>"><a data-id="scripts" href="<?php echo $option_prefix;?>scripts">Scripts</a></li>
         </ul>
         <form method="post">
-        	<div id="mos-testimonial-dashboard" class="tab-con <?php if($active_tab == 'dashboard') echo 'active';?>">
-        		Plugin Details
+          <div id="mos-testimonial-dashboard" class="tab-con <?php if($active_tab == 'dashboard') echo 'active';?>">
+            Plugin Details
+          </div>
+        	<div id="mos-testimonial-layouts" class="tab-con <?php if($active_tab == 'layouts') echo 'active';?>">
+            <div class="gruop-container">
+              <div class="group-unit">
+                <table border="1">
+                  <caption>template-1</caption>
+                  <tr>
+                    <td colspan="3" valign="middle">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td valign="middle">&nbsp;</td>
+                    <td valign="middle">
+                    testimonial_image | testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating
+                    </td>
+                    <td valign="middle">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" valign="middle">&nbsp;</td>
+                  </tr>
+                </table>  
+              </div>
+          		<div class="group-unit">
+                <table border="1">
+                  <caption>template-2</caption>
+                  <tr>
+                    <td colspan="3" valign="middle">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td valign="middle">testimonial_image</td>
+                    <td valign="middle">
+                    testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating
+                    </td>
+                    <td valign="middle">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" valign="middle">&nbsp;</td>
+                  </tr>
+                </table>  
+              </div>
+            </div>
           </div>
           <div id="mos-testimonial-scripts" class="tab-con <?php if($active_tab == 'scripts') echo 'active';?>">
             <table class="form-table">
@@ -46,20 +87,11 @@ function mos_testimonial_admin_page () {
                     </td> 
                   </tr>
                   <tr>
-                    <th scope="row">Bootstrap</th>
+                    <th scope="row">Owl Carousel</th>
                     <td>
                       <fieldset>
-                        <legend class="screen-reader-text"><span>Bootstrap</span></legend>
-                        <label for="bootstrap"><input name="bootstrap" type="checkbox" id="bootstrap" value="1" <?php checked( $mos_testimonial_option['bootstrap'], 1 ) ?>>Yes I like to add Bootstrap from Plugin.</label>
-                    </fieldset>
-                    </td> 
-                  </tr>
-                  <tr>
-                    <th scope="row">Font Awesome</th>
-                    <td>
-                      <fieldset>
-                        <legend class="screen-reader-text"><span>Font Awesome</span></legend>
-                        <label for="awesome"><input name="awesome" type="checkbox" id="awesome" value="1" <?php checked( $mos_testimonial_option['awesome'], 1 ) ?>>Yes I like to add Font Awesome from Plugin.</label>
+                        <legend class="screen-reader-text"><span>Owl Carousel</span></legend>
+                        <label for="owl-carousel"><input name="owl-carousel" type="checkbox" id="owl-carousel" value="1" <?php checked( $mos_testimonial_option['owl-carousel'], 1 ) ?>>Yes I like to add Owl Carousel from Plugin.</label>
                     </fieldset>
                     </td> 
                   </tr>
