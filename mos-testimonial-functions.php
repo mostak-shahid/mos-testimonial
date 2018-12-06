@@ -34,15 +34,15 @@ function mos_testimonial_admin_enqueue_scripts(){
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_admin_enqueue_scripts' );
 function mos_testimonial_enqueue_scripts(){
 	global $mos_testimonial_option;
-	if ($mos_testimonial_option['jquery']) {
+	if (@$mos_testimonial_option['jquery']) {
 		wp_enqueue_script( 'jquery' );
 	}
-	if ($mos_testimonial_option['bootstrap']) {
-		wp_enqueue_style( 'bootstrap.min', plugins_url( 'css/bootstrap.min.css', __FILE__ ) );
-		wp_enqueue_script( 'bootstrap.min', plugins_url( 'js/bootstrap.min.js', __FILE__ ), array('jquery') );
-	}
-	if ($mos_testimonial_option['awesome']) {
-		wp_enqueue_style( 'font-awesome.min', plugins_url( 'fonts/font-awesome-4.7.0/css/font-awesome.min.css', __FILE__ ) );
+	if (@$mos_testimonial_option['owl-carousel']) {
+		wp_enqueue_style( 'owl.carousel.min', plugins_url( 'plugins/owlcarousel/owl.carousel.min.css', __FILE__ ) );
+		wp_enqueue_style( 'owl.theme.default.min', plugins_url( 'plugins/owlcarousel/owl.theme.default.min.css', __FILE__ ) );
+
+		wp_enqueue_script('owl.carousel.min', plugins_url( 'plugins/owlcarousel/owl.carousel.min.js', __FILE__ ), array('jquery'));
+		wp_enqueue_script( 'owl.carousel.min' );
 	}
 	wp_enqueue_style( 'mos-testimonial', plugins_url( 'css/mos-testimonial.css', __FILE__ ) );
 	wp_enqueue_script( 'mos-testimonial-functions', plugins_url( 'js/mos-testimonial-functions.js', __FILE__ ), array('jquery') );
@@ -136,7 +136,7 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	}
 	if ($atts['orderby']) $args['orderby'] = $atts['orderby'];
 	if ($atts['order']) $args['order'] = $atts['order'];
-	if ($atts['author']) $args['author'] = $atts['author'];
+	if (@$atts['author']) $args['author'] = $atts['author'];
 	if ($atts['view'] == 'carousel') {
 		$con_cls = ' owl-carousel owl-theme';
 	}
@@ -148,7 +148,7 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	$top_con = $mos_testimonial_option['template'][$identity]['top_con'];
 	$mid_lef_con = $mos_testimonial_option['template'][$identity]['mid_lef_con'];
 	$mid_cen_con = $mos_testimonial_option['template'][$identity]['mid_cen_con'];
-	$mid_right_con = $mos_testimonial_option['template'][$identity]['mid_right_con'];
+	$mid_right_con = $mos_testimonial_option['template'][$identity]['mid_rig_con'];
 	$bot_con = $mos_testimonial_option['template'][$identity]['bot_con'];
 	$query = new WP_Query( $args );
 	if ( $query->have_posts() ) :
