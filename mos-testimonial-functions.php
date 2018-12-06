@@ -66,18 +66,18 @@ add_action( 'wp_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 function mos_testimonial_scripts() {
 	global $mos_testimonial_option;
-	if ($mos_testimonial_option['css']) {
+	if (@$mos_testimonial_option['css']) {
 		?>
 		<style>
 			<?php echo $mos_testimonial_option['css'] ?>
 		</style>
 		<?php
 	}
-	if ($mos_testimonial_option['js']) {
+	if (@$mos_testimonial_option['js']) {
 		?>
-		<style>
+		<script>
 			<?php echo $mos_testimonial_option['js'] ?>
-		</style>
+		</script>
 		<?php
 	}
 }
@@ -202,7 +202,7 @@ function testimonial_print ($elements = '', $post_id) {
 	$slices = explode("|",$elements);
 	foreach ($slices as $value) {
 		if ($value == 'testimonial_title') {
-			$link = get_post_meta( $post_id, '_mos_testimonial_designation', true );
+			$link = get_post_meta( $post_id, '_mos_testimonial_url', true );
 			$output .= '<h3 class="testimonial-title">';
 			if ($link) $output .= '<a href="'.$link.'">';
 			$output .= get_the_title( $post_id );
@@ -218,6 +218,21 @@ function testimonial_print ($elements = '', $post_id) {
 		} 
 		elseif ($value == 'testimonial_designation') {			
 			$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
+		}
+		elseif ($value == 'testimonial_rating') {			
+			$output .= '<span class="testimonial-rating">'.get_post_meta( $post_id, '_mos_testimonial_rating', true ).'</span>'; 
+		}
+		elseif ($value == 'testimonial_video') {	
+			if (get_post_meta( $post_id, '_mos_testimonial_oembed', true ))	{
+				$output .= '<div class="embed-responsive embed-responsive-16by9">';
+				$output .= '<iframe class="embed-responsive-item" src="'.get_post_meta( $post_id, '_mos_testimonial_oembed', true ).'"></iframe>';
+				$output .= '</div>'; 
+			}
+		}
+		elseif ($value == 'testimonial_image') {	
+			if ( has_post_thumbnail() ) {		
+				$output .= '<div class="testimonial-image">'.get_the_post_thumbnail($post_id).'</span>'; 
+			}
 		} 
 		else {
 			$output .= '<span class="custom-ele-'.$n.'">'.$value.'</span>'; 
