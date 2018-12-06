@@ -67,7 +67,7 @@ function mos_testimonial_admin_page () {
                     <td>
                       <fieldset>
                         <legend class="screen-reader-text"><span>JQuery</span></legend>
-                        <label for="jquery"><input name="jquery" type="checkbox" id="jquery" value="1" <?php checked( $mos_testimonial_option['jquery'], 1 ) ?>>Yes I like to add JQuery from Plugin.</label>
+                        <label for="jquery"><input name="jquery" type="checkbox" id="jquery" value="1" <?php checked( @$mos_testimonial_option['jquery'], 1 ) ?>>Yes I like to add JQuery from Plugin.</label>
                     </fieldset>
                     </td> 
                   </tr>
@@ -76,7 +76,7 @@ function mos_testimonial_admin_page () {
                     <td>
                       <fieldset>
                         <legend class="screen-reader-text"><span>Owl Carousel</span></legend>
-                        <label for="owl-carousel"><input name="owl-carousel" type="checkbox" id="owl-carousel" value="1" <?php checked( $mos_testimonial_option['owl-carousel'], 1 ) ?>>Yes I like to add Owl Carousel from Plugin.</label>
+                        <label for="owl-carousel"><input name="owl-carousel" type="checkbox" id="owl-carousel" value="1" <?php checked( @$mos_testimonial_option['owl-carousel'], 1 ) ?>>Yes I like to add Owl Carousel from Plugin.</label>
                     </fieldset>
                     </td> 
                   </tr>
