@@ -2,7 +2,7 @@
 /*
 Plugin Name: Mos Testimonial
 Description: Base of future plugin
-Version: 0.0.1
+Version: 0.0.2
 Author: Md. Mostak Shahid
 */
 
