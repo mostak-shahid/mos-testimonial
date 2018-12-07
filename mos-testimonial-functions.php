@@ -136,12 +136,14 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	}
 	if ($atts['orderby']) $args['orderby'] = $atts['orderby'];
 	if ($atts['order']) $args['order'] = $atts['order'];
-	if (@$atts['author']) $args['author'] = $atts['author'];
+	if (@$atts['author']) $args['author'] = $atts['author'];	
+	if ($atts['grid'] > 5 ) $atts['grid'] = 5;
+	elseif ($atts['grid'] < 1 ) $atts['grid'] = 1;
 	if ($atts['view'] == 'carousel') {
 		$con_cls = ' owl-carousel owl-theme';
 	}
 	else {
-		$con_cls = '' ;
+		$con_cls = ' block-view' ;
 	}
 	$template_slice = $slices = explode("-",trim($atts['template']));
 	$identity = $template_slice[1];
@@ -151,26 +153,32 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	$mid_right_con = $mos_testimonial_option['template'][$identity]['mid_rig_con'];
 	$bot_con = $mos_testimonial_option['template'][$identity]['bot_con'];
 	$query = new WP_Query( $args );
+	$total_post = $query->post_count;
+	$single_col = round( $total_post / $atts['grid'] );
 	if ( $query->have_posts() ) :
 		$idenfier = rand(10,1000);
+		$n = 0;
 		$html .= '<div id="mos-testimonial-'.$idenfier.'" class="mos-testimonial-container' . $con_cls . $atts['container_class'] . '">';
+		if ($atts['view'] == 'block') $html .= '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
 		while ( $query->have_posts() ) : $query->the_post();			
 
 			$html .= '<div class="testimonial-unit">';
-			$html .= '<div class="top">'.$top_con.'</div>';
-			$html .= '<div class="middle">';
-			$html .= '<div class="left">'.$mid_lef_con.'</div>';
-			$html .= '<div class="center">'.testimonial_print ( $mid_cen_con, get_the_ID() ).'</div>';
-			$html .= '<div class="right">'.$mid_right_con.'</div>';
+				$html .= '<div class="top">'.$top_con.'</div>';
+				$html .= '<div class="middle">';
+					$html .= '<div class="left">'.$mid_lef_con.'</div>';
+					$html .= '<div class="center">'.testimonial_print ( $mid_cen_con, get_the_ID() ).'</div>';
+					$html .= '<div class="right">'.$mid_right_con.'</div>';
+				$html .= '</div>';
+				$html .= '<div class="bottom">'.$bot_con.'</div>';
 			$html .= '</div>';
-			$html .= '<div class="bottom">'.$bot_con.'</div>';
-			$html .= '</div>';
-
+			$n++;
+			if ($n % $single_col == 0 AND $n < $total_post AND $atts['view'] == 'block') $html .= '</div><!--/.mos-testimonial-col-'.$atts['grid'] . '-->' . '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
 		endwhile;
+		if ($atts['view'] == 'block') $html .= '</div><!--/.mos-testimonial-col-'.$atts['grid'] . '-->';
 		$html .= '</div><!--/.mos-testimonial-container-->';
 
 		wp_reset_postdata();
-		if ($atts['pagination'] AND $atts['view'] = 'block') :
+		if ($atts['pagination'] AND $atts['view'] == 'block') :
 		    $html .= '<div class="pagination-wrapper testimonial-pagination">'; 
 		        $html .= '<nav class="navigation pagination" role="navigation">';
 		            $html .= '<div class="nav-links">'; 
@@ -186,6 +194,21 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		            $html .= '</div>';
 		        $html .= '</nav>';
 		    $html .= '</div>';
+		endif;
+		if ($atts['view'] == 'carousel') :
+			$layout = ($atts['grid']) ? $atts['grid'] : 3;
+			$html .= '<script>';
+				$html .= 'jQuery(document).ready(function($) {';
+					$html .= 'var owl_testimonial_owl = $("#mos-testimonial-'.$idenfier.'");';
+					$html .= 'owl_testimonial_owl.owlCarousel({loop: true, nav: true, dots: true, margin: 0, azyLoad: true,autoplay: true,autoplayTimeout: 6000,autoplayHoverPause: true,';
+					if($layout ==1) :
+						$html .= 'items:1,';
+					else :
+						$html .= 'responsive:{ 0: { items:1, }, 992: { items:2, }, 1200: { items: '.$layout.', } }';
+					endif;
+					$html .= '});';
+				$html .= '});';
+			$html .= '</script>';
 		endif;
 	endif;
 	return $html;
