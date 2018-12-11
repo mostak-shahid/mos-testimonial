@@ -44,9 +44,9 @@ function mos_testimonial_enqueue_scripts(){
 		wp_enqueue_script('owl.carousel.min', plugins_url( 'plugins/owlcarousel/owl.carousel.min.js', __FILE__ ), array('jquery'));
 		wp_enqueue_script( 'owl.carousel.min' );
 	}
-	wp_enqueue_style( 'mos-testimonial', plugins_url( 'css/mos-testimonial.css', __FILE__ ) );
-	wp_enqueue_script( 'mos-testimonial-functions', plugins_url( 'js/mos-testimonial-functions.js', __FILE__ ), array('jquery') );
-	wp_enqueue_script( 'mos-testimonial', plugins_url( 'js/mos-testimonial.js', __FILE__ ), array('jquery') );
+	wp_enqueue_style( 'mos-testimonial.min', plugins_url( 'css/mos-testimonial.min.css', __FILE__ ) );
+	wp_enqueue_script( 'mos-testimonial-functions.min', plugins_url( 'js/mos-testimonial-functions.min.js', __FILE__ ), array('jquery') );
+	wp_enqueue_script( 'mos-testimonial.min', plugins_url( 'js/mos-testimonial.min.js', __FILE__ ), array('jquery') );
 	$ajax_params = array(
 		'ajax_url' => admin_url('admin-ajax.php'),
 		'ajax_nonce' => wp_create_nonce('mos_testimonial_verify'),
