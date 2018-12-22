@@ -26,12 +26,22 @@ function mos_testimonial_admin_enqueue_scripts(){
 		wp_enqueue_script( 'javascript-hint', plugins_url( 'plugins/CodeMirror/addon/hint/javascript-hint.js', __FILE__ ), array('jquery') );
 		/*Editor*/
 
-		wp_enqueue_script( 'mos-testimonial-functions', plugins_url( 'js/mos-testimonial-functions.js', __FILE__ ), array('jquery') );
+		wp_enqueue_script( 'mos-testimonial-functions.min', plugins_url( 'js/mos-testimonial-functions.min.js', __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'mos-testimonial-admin', plugins_url( 'js/mos-testimonial-admin.js', __FILE__ ), array('jquery') );
 	}
 
 }
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_admin_enqueue_scripts' );
+
+function mos_testimonial_ajax_scripts(){
+	wp_enqueue_script( 'mos-testimonial-ajax.min', plugins_url( 'js/mos-testimonial-ajax.min.js', __FILE__ ), array('jquery') );
+	$ajax_params = array(
+		'ajax_url' => admin_url('admin-ajax.php'),
+		'ajax_nonce' => wp_create_nonce('mos_testimonial_verify'),
+	);
+	wp_localize_script( 'mos-testimonial-ajax.min', 'ajax_obj', $ajax_params );
+}
+add_action( 'admin_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 function mos_testimonial_enqueue_scripts(){
 	global $mos_testimonial_option;
 	if (@$mos_testimonial_option['jquery']) {
@@ -54,15 +64,7 @@ function mos_testimonial_enqueue_scripts(){
 	wp_localize_script( 'mos-testimonial', 'ajax_obj', $ajax_params );
 }
 add_action( 'wp_enqueue_scripts', 'mos_testimonial_enqueue_scripts' );
-function mos_testimonial_ajax_scripts(){
-	wp_enqueue_script( 'mos-testimonial-ajax', plugins_url( 'js/mos-testimonial-ajax.js', __FILE__ ), array('jquery') );
-	$ajax_params = array(
-		'ajax_url' => admin_url('admin-ajax.php'),
-		'ajax_nonce' => wp_create_nonce('mos_testimonial_verify'),
-	);
-	wp_localize_script( 'mos-testimonial-ajax', 'ajax_obj', $ajax_params );
-}
-add_action( 'wp_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
+
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 function mos_testimonial_scripts() {
 	global $mos_testimonial_option;
