@@ -1,12 +1,12 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] == "POST" ) {  
-    if ($_POST['mos_testimonial_submit'] == 'Save Changes') {
+if (isset($_POST['mos_testimonial_submit']) AND $_POST['mos_testimonial_submit'] == 'Save Changes') {  
+
 	    $mos_testimonial_option = array();
 	    foreach ($_POST as $field => $value) {
 	    	$mos_testimonial_option[$field] = trim($value);
 	    }
 	    update_option( 'mos_testimonial_option', $mos_testimonial_option, false );
-	}
+
 }
 
 function mos_testimonial_admin_menu () {
