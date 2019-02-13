@@ -53,6 +53,11 @@ function mos_testimonial_activate() {
     $mos_testimonial_option['template'][2]['mid_cen_con'] = 'testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
     $mos_testimonial_option['template'][2]['mid_rig_con'] = '';
     $mos_testimonial_option['template'][2]['bot_con'] = '';
+    $mos_testimonial_option['template'][3]['top_con'] = '';
+    $mos_testimonial_option['template'][3]['mid_lef_con'] = '';
+    $mos_testimonial_option['template'][3]['mid_cen_con'] = 'testimonial_image | testimonial_excerpt | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
+    $mos_testimonial_option['template'][3]['mid_rig_con'] = '';
+    $mos_testimonial_option['template'][3]['bot_con'] = '';
     update_option( 'mos_testimonial_option', $mos_testimonial_option, false );
     add_option('mos_testimonial_do_activation_redirect', true);
 }

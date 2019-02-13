@@ -241,6 +241,14 @@ function testimonial_print ($elements = '', $post_id) {
 			$content = str_replace(']]>', ']]&gt;', $content);
 			$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
 		} 
+		elseif ($value == 'testimonial_excerpt') {
+			$content_post = get_post($post_id);
+			$content = $content_post->post_content;
+			$content = apply_filters('the_content', $content);
+			$content = wp_trim_words($content, 25, '...');
+			//$content = str_replace(']]>', ']]&gt;', $content);
+			$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
+		} 
 		elseif ($value == 'testimonial_designation') {			
 			$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
 		}
