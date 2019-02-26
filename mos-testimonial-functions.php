@@ -43,11 +43,11 @@ function mos_testimonial_ajax_scripts(){
 }
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 function mos_testimonial_enqueue_scripts(){
-	global $mos_testimonial_option;
-	if (@$mos_testimonial_option['jquery']) {
+	global $mos_testimonial_options;
+	if (@$mos_testimonial_options['jquery']) {
 		wp_enqueue_script( 'jquery' );
 	}
-	if (@$mos_testimonial_option['owl-carousel']) {
+	if (@$mos_testimonial_options['owl-carousel']) {
 		wp_enqueue_style( 'owl.carousel.min', plugins_url( 'plugins/owlcarousel/owl.carousel.min.css', __FILE__ ) );
 		wp_enqueue_style( 'owl.theme.default.min', plugins_url( 'plugins/owlcarousel/owl.theme.default.min.css', __FILE__ ) );
 
@@ -67,18 +67,18 @@ add_action( 'wp_enqueue_scripts', 'mos_testimonial_enqueue_scripts' );
 
 add_action( 'admin_enqueue_scripts', 'mos_testimonial_ajax_scripts' );
 function mos_testimonial_scripts() {
-	global $mos_testimonial_option;
-	if (@$mos_testimonial_option['css']) {
+	global $mos_testimonial_options;
+	if (@$mos_testimonial_options['css']) {
 		?>
 		<style>
-			<?php echo $mos_testimonial_option['css'] ?>
+			<?php echo $mos_testimonial_options['css'] ?>
 		</style>
 		<?php
 	}
-	if (@$mos_testimonial_option['js']) {
+	if (@$mos_testimonial_options['js']) {
 		?>
 		<script>
-			<?php echo $mos_testimonial_option['js'] ?>
+			<?php echo $mos_testimonial_options['js'] ?>
 		</script>
 		<?php
 	}
@@ -87,7 +87,7 @@ add_action( 'wp_footer', 'mos_testimonial_scripts', 100 );
 
 
 function testimonial_func( $atts = array(), $content = '' ) {
-	global $mos_testimonial_option;
+	global $mos_testimonial_options;
 	$html = '';
 	$atts = shortcode_atts( array(
 		'limit'				=> '-1',
@@ -96,6 +96,7 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		'tag'				=> '',
 		'orderby'			=> '',
 		'order'				=> '',
+		'author'			=> '',
 		'container'			=> 0,
 		'container_class'	=> '',
 		'class'				=> '',
@@ -138,7 +139,7 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	}
 	if ($atts['orderby']) $args['orderby'] = $atts['orderby'];
 	if ($atts['order']) $args['order'] = $atts['order'];
-	if (@$atts['author']) $args['author'] = $atts['author'];	
+	if ($atts['author']) $args['author'] = $atts['author'];	
 	if ($atts['grid'] > 5 ) $atts['grid'] = 5;
 	elseif ($atts['grid'] < 1 ) $atts['grid'] = 1;
 	if ($atts['view'] == 'carousel') {
@@ -149,11 +150,12 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	}
 	$template_slice = $slices = explode("-",trim($atts['template']));
 	$identity = $template_slice[1];
-	$top_con = $mos_testimonial_option['template'][$identity]['top_con'];
-	$mid_lef_con = $mos_testimonial_option['template'][$identity]['mid_lef_con'];
-	$mid_cen_con = $mos_testimonial_option['template'][$identity]['mid_cen_con'];
-	$mid_right_con = $mos_testimonial_option['template'][$identity]['mid_rig_con'];
-	$bot_con = $mos_testimonial_option['template'][$identity]['bot_con'];
+	$mos_testimonial_templates = get_option( 'mos_testimonial_templates' );
+	$top_con = $mos_testimonial_templates['template'][$identity]['top_con'];
+	$mid_lef_con = $mos_testimonial_templates['template'][$identity]['mid_lef_con'];
+	$mid_cen_con = $mos_testimonial_templates['template'][$identity]['mid_cen_con'];
+	$mid_right_con = $mos_testimonial_templates['template'][$identity]['mid_rig_con'];
+	$bot_con = $mos_testimonial_templates['template'][$identity]['bot_con'];
 	$query = new WP_Query( $args );
 	$total_post = $query->post_count;
 	$single_col = round( $total_post / $atts['grid'] );
