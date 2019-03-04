@@ -33,3 +33,90 @@
 .group-unit td {
     min-width: 100px;
 }
+#TB_ajaxContent .mos-wrapper {
+    flex-flow: row wrap;
+}
+#TB_ajaxContent .wrapper {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    width: 600px;
+    height: 545px;
+    flex-flow: row wrap;
+}
+
+#TB_ajaxContent .wrapper > * {
+    padding: 10px;
+    flex: 1 100%;
+}
+
+#TB_ajaxContent .wrapper .disable {
+    background: grey;
+}
+#TB_ajaxContent .wrapper .header {
+    background: tomato;
+}
+
+#TB_ajaxContent .wrapper .footer {
+    background: lightgreen;
+}
+
+#TB_ajaxContent .wrapper .main {
+    background: deepskyblue;
+}
+
+#TB_ajaxContent .wrapper .aside-1 {
+    background: gold;
+}
+
+#TB_ajaxContent .wrapper .aside-2 {
+    background: hotpink;
+}
+#TB_ajaxContent .wrapper ul li {
+    border: 1px solid #DFDFDF;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #F1F1F1;
+    background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
+    background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
+    background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
+    background-image: -webkit-linear-gradient(top,#f9f9f9,#ececec);
+    background-image: linear-gradient(top,#f9f9f9,#ececec);
+    overflow: hidden;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: inset 0 1px 0 #fff;
+    -webkit-box-shadow: inset 0 1px 0 #fff;
+    box-shadow: inset 0 1px 0 #fff;
+    text-align: center;
+}
+#TB_ajaxContent .wrapper ul.connected-sortable {
+    min-height: 50px;
+    border: 1px dashed #000000;
+    padding: 10px;
+}
+#TB_ajaxContent .wrapper ul.connected-sortable li {
+    cursor: move;    
+}
+#TB_ajaxContent .wrapper ul.connected-sortable li:last-child {
+    margin-bottom: 0;  
+}
+
+@media all and (min-width: 600px) {
+    #TB_ajaxContent .wrapper .aside { flex: 1 0 0; }
+}
+
+@media all and (min-width: 800px) {
+    #TB_ajaxContent .wrapper .main    { flex: 2 0px; }
+    #TB_ajaxContent .wrapper .aside-1 { order: 1; } 
+    #TB_ajaxContent .wrapper .main    { order: 2; }
+    #TB_ajaxContent .wrapper .aside-2 { order: 3; }
+    #TB_ajaxContent .wrapper .footer  { order: 4; }
+}

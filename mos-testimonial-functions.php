@@ -166,15 +166,8 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		if ($atts['view'] == 'block') $html .= '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
 		while ( $query->have_posts() ) : $query->the_post();			
 
-			$html .= '<div class="testimonial-unit">';
-				$html .= '<div class="top">'.$top_con.'</div>';
-				$html .= '<div class="middle">';
-					$html .= '<div class="left">'.$mid_lef_con.'</div>';
-					$html .= '<div class="center">'.testimonial_print ( $mid_cen_con, get_the_ID() ).'</div>';
-					$html .= '<div class="right">'.$mid_right_con.'</div>';
-				$html .= '</div>';
-				$html .= '<div class="bottom">'.$bot_con.'</div>';
-			$html .= '</div>';
+			$html .= testimonial_print ( get_the_ID() );
+
 			$n++;
 			if ($n % $single_col == 0 AND $n < $total_post AND $atts['view'] == 'block') $html .= '</div><!--/.mos-testimonial-col-'.$atts['grid'] . '-->' . '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
 		endwhile;
@@ -218,61 +211,67 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	return $html;
 }
 add_shortcode( 'testimonials', 'testimonial_func' );
-
-
-//testimonial_print ('testimonial_content|testimonial_video|testimonial_title', 150);
-function testimonial_print ($elements = '', $post_id) {
+function testimonial_print ($post_id) {
+	$options = get_option( 'mos_testimonial_options' );
 	$output = '';
-	$n = 1;
-	//$default_elements = array( "testimonial_image", "testimonial_content", "testimonial_video", "testimonial_title", "testimonial_designation", "testimonial_rating");
-	$elements = str_replace(' ', '', $elements);
-	$slices = explode("|",$elements);
-	foreach ($slices as $value) {
-		if ($value == 'testimonial_title') {
-			$link = get_post_meta( $post_id, '_mos_testimonial_url', true );
-			$output .= '<h3 class="testimonial-title">';
-			if ($link) $output .= '<a href="'.$link.'">';
-			$output .= get_the_title( $post_id );
-			if ($link) $output .= '</a>';
-			$output .= '</h3>'; 
+	$disable = $header = $main = $left = $right = $footer = array();
+	$elements = array('plasbo', 'Feature Image', 'Content', 'Video', 'Title', 'Designation', 'Rating', 'Excerpt');
+	foreach ($options["custom-template"] as $value) {
+		$slice = explode(',', $value);
+		if ($slice[0] == 'disable') $disable[] = $slice[1];
+		elseif ($slice[0] == 'header') $header[] = $slice[1];
+		elseif ($slice[0] == 'main') $main[] = $slice[1];
+		elseif ($slice[0] == 'left') $left[] = $slice[1];
+		elseif ($slice[0] == 'right') $right[] = $slice[1];
+		elseif ($slice[0] == 'footer') $footer[] = $slice[1];
+	}
+	$output .= '<div class="testimonial-unit">'; 
+		if (sizeof($main)) {
+			$output .= '<div class="middle">';
+				foreach ($main as $value) {
+					$output .= element_print ($value, get_the_ID());
+				}
+			$output .= '</div><!--./middle-->';	
 		}
-		elseif ($value == 'testimonial_content') {
-			$content_post = get_post($post_id);
-			$content = $content_post->post_content;
-			$content = apply_filters('the_content', $content);
-			$content = str_replace(']]>', ']]&gt;', $content);
-			$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
-		} 
-		elseif ($value == 'testimonial_excerpt') {
-			$content_post = get_post($post_id);
-			$content = $content_post->post_content;
-			$content = apply_filters('the_content', $content);
-			$content = wp_trim_words($content, 25, '...');
-			//$content = str_replace(']]>', ']]&gt;', $content);
-			$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
-		} 
-		elseif ($value == 'testimonial_designation') {			
-			$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
+	$output .= '</div><!--./testimonial-unit-->';
+	return $output;
+}
+function element_print ($e_id, $post_id) {
+	$output = '';
+	if ($e_id == 1 AND has_post_thumbnail($post_id)) {
+		$output .= '<div class="testimonial-image">'.get_the_post_thumbnail($post_id).'</div>'; 
+	}
+	elseif ($e_id == 2) {
+		$content_post = get_post($post_id);
+		$content = $content_post->post_content;
+		$content = apply_filters('the_content', $content);
+		$content = str_replace(']]>', ']]&gt;', $content);
+		$output .= '<div class="testimonial-desc">'.$content.'</div>';
+	}
+	if ($e_id == 3) {
+		if (get_post_meta( $post_id, '_mos_testimonial_oembed', true ))	{
+			$output .= '<div class="embed-responsive embed-responsive-16by9">';
+			$output .= '<iframe class="embed-responsive-item" src="'.get_post_meta( $post_id, '_mos_testimonial_oembed', true ).'"></iframe>';
+			$output .= '</div>'; 
 		}
-		elseif ($value == 'testimonial_rating') {			
-			$output .= '<span class="testimonial-rating">'.get_post_meta( $post_id, '_mos_testimonial_rating', true ).'</span>'; 
-		}
-		elseif ($value == 'testimonial_video') {	
-			if (get_post_meta( $post_id, '_mos_testimonial_oembed', true ))	{
-				$output .= '<div class="embed-responsive embed-responsive-16by9">';
-				$output .= '<iframe class="embed-responsive-item" src="'.get_post_meta( $post_id, '_mos_testimonial_oembed', true ).'"></iframe>';
-				$output .= '</div>'; 
-			}
-		}
-		elseif ($value == 'testimonial_image') {	
-			if ( has_post_thumbnail() ) {		
-				$output .= '<div class="testimonial-image">'.get_the_post_thumbnail($post_id).'</span>'; 
-			}
-		} 
-		else {
-			$output .= '<span class="custom-ele-'.$n.'">'.$value.'</span>'; 
-		}
-		$n++; 
+	}
+	if ($e_id == 4) {
+		$output = '<h3 class="testimonial-title">' . get_the_title($post_id) . '</h3>';
+	}
+	if ($e_id == 5) {
+		$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
+	}
+	if ($e_id == 6) {
+		$output .= '<span class="testimonial-rating">'.get_post_meta( $post_id, '_mos_testimonial_rating', true ).'</span>';
+	}
+	if ($e_id == 7) {
+		$content_post = get_post($post_id);
+		$content = $content_post->post_content;
+		$content = apply_filters('the_content', $content);
+		$content = wp_trim_words($content, 25, '...');
+		//$content = str_replace(']]>', ']]&gt;', $content);
+		$output .= '<div class="testimonial-desc">'.$content.'</div>'; 
 	}
 	return $output;
 }
+

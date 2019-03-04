@@ -149,31 +149,173 @@ function mos_testimonial_section_dash_start_cb( $args ) {
 }
 function mos_testimonial_section_layout_start_cb( $args ) {
 	$data = get_mos_testimonial_active_tab ();
+	$options = get_option( 'mos_testimonial_options' );
 	?>
 	<div id="mos-testimonial-layout" class="tab-con <?php if($data['active_tab'] == 'layout') echo 'active';?>">		
 		<h2><?php esc_html_e('Templates') ?></h2>
+
 		<div class="gruop-container">
-			<?php 
-				$templates = get_option( 'mos_testimonial_templates' );
-				foreach ($templates['template'] as $key => $value) : ?>
-				<div class="group-unit">
-					<table border="1">
-						<caption>template-<?php echo $key ?></caption>
-						<tr>
-							<td colspan="3" valign="middle"><?php if ($value['top_con']) echo $value['top_con']; else echo '&nbsp;'; ?></td>
-						</tr>
-						<tr>
-							<td valign="middle"><?php if ($value['mid_lef_con']) echo $value['mid_lef_con']; else echo '&nbsp;'; ?></td>
-							<td valign="middle"><?php if ($value['mid_cen_con']) echo $value['mid_cen_con']; else echo '&nbsp;'; ?></td>
-							<td valign="middle"><?php if ($value['mid_rig_con']) echo $value['mid_rig_con']; else echo '&nbsp;'; ?></td>
-						</tr>
-						<tr>
-							<td colspan="3" valign="middle"><?php if ($value['bot_con']) echo $value['bot_con']; else echo '&nbsp;'; ?></td>
-						</tr>
-					</table>  
+			<?php add_thickbox(); ?>			
+			<div id="template-1" style="display:none;">
+				<div class="wrapper">
+					<header class="header"></header>
+					<article class="main">
+						<ul>
+							<li>Feature Image</li>
+							<li>Content</li>
+							<li>Video</li>
+							<li>Title</li>
+							<li>Designation</li>
+							<li>Rating </li>
+						</ul>
+
+					</article>
+					<aside class="aside aside-1"></aside>
+					<aside class="aside aside-2"></aside>
+					<footer class="footer"></footer>
 				</div>
-			<?php endforeach; ?>
-			<input type="hidden" value="<?php echo $key + 1 ?>">
+			</div>	
+			<div id="template-2" style="display:none;">
+				<div class="wrapper">
+					<header class="header"></header>
+					<article class="main">
+						<ul>
+							<li>Feature Image</li>
+							<li>Excerpt</li>
+							<li>Video</li>
+							<li>Title</li>
+							<li>Designation</li>
+							<li>Rating </li>
+						</ul>
+					</article>
+					<aside class="aside aside-1"></aside>
+					<aside class="aside aside-2"></aside>
+					<footer class="footer"></footer>
+				</div>
+			</div>
+			<div id="template-3" style="display:none;">
+				<div class="wrapper">
+					<header class="header"></header>
+					<article class="main">
+						<ul>
+							<li>Content</li>
+							<li>Video</li>
+							<li>Title</li>
+							<li>Designation</li>
+							<li>Rating </li>
+						</ul>
+					</article>
+					<aside class="aside aside-1">
+						<ul>
+							<li>Feature Image</li>
+						</ul>
+					</aside>
+					<aside class="aside aside-2"></aside>
+					<footer class="footer"></footer>
+				</div>
+			</div>
+			<div id="custom-template" style="display:none;">
+				<div class="wrapper" data-name="custom-template">
+					<?php 
+					$disable = $header = $main = $left = $right = $footer = array();
+					$elements = array('plasbo', 'Feature Image', 'Content', 'Video', 'Title', 'Designation', 'Rating', 'Excerpt');
+					foreach ($options["custom-template"] as $value) {
+						$slice = explode(',', $value);
+						if ($slice[0] == 'disable') $disable[] = $slice[1];
+						elseif ($slice[0] == 'header') $header[] = $slice[1];
+						elseif ($slice[0] == 'main') $main[] = $slice[1];
+						elseif ($slice[0] == 'left') $left[] = $slice[1];
+						elseif ($slice[0] == 'right') $right[] = $slice[1];
+						elseif ($slice[0] == 'footer') $footer[] = $slice[1];
+					} 
+					?>
+
+					<div class="disable">
+						<ul class="connected-sortable droppable-disable" data-name="disable">
+							<?php if (sizeof($disable) > 0) : ?>
+								<?php foreach ($disable as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="disable,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</ul>
+					</div>
+					<header class="header">
+						<ul class="connected-sortable droppable-header" data-name="header">
+							<?php if (sizeof($header) > 0) : ?>
+								<?php foreach ($header as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="header,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</ul>
+					</header>
+					<article class="main">
+						<ul class="connected-sortable droppable-main" data-name="main">
+							<?php if (sizeof($main) > 0) : ?>
+								<?php foreach ($main as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="main,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</ul>
+					</article>
+					<aside class="aside aside-1">
+						<ul class="connected-sortable droppable-left" data-name="left">
+							<?php if (sizeof($left) > 0) : ?>
+								<?php foreach ($left as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="left,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>							
+						</ul>
+					</aside>
+					<aside class="aside aside-2">
+						<ul class="connected-sortable droppable-right" data-name="right">
+							<?php if (sizeof($right) > 0) : ?>
+								<?php foreach ($right as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="right,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>							
+						</ul>
+					</aside>
+					<footer class="footer">
+						<ul class="connected-sortable droppable-footer" data-name="footer">
+							<?php if (sizeof($footer) > 0) : ?>
+								<?php foreach ($footer as $value) : ?>
+									<li data-position="<?php echo $value ?>" class="draggable-item">
+										<?php echo $elements[$value]; ?>
+										<input name="mos_testimonial_options[custom-template][]" type="hidden" value="footer,<?php echo $value ?>">
+									</li>
+								<?php endforeach; ?>
+							<?php endif; ?>							
+						</ul>
+					</footer>
+				</div>
+			</div>
+			<div class="group-unit">
+				<a href="#TB_inline?&width=600&height=550&inlineId=template-1" class="thickbox">Template 1</a>
+			</div>
+			<div class="group-unit">
+				<a href="#TB_inline?&width=600&height=550&inlineId=template-2" class="thickbox">Template 2</a>
+			</div>
+			<div class="group-unit">
+				<a href="#TB_inline?&width=600&height=550&inlineId=template-3" class="thickbox">Template 3</a>
+			</div>
+			<div class="group-unit">
+				<a href="#TB_inline?&width=600&height=550&inlineId=custom-template" class="thickbox">Custom Template</a>
+			</div>				
 		</div>
 		<?php
 }
