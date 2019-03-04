@@ -231,9 +231,9 @@ function testimonial_print ($post_id) {
 				foreach ($main as $value) {
 					$output .= element_print ($value, get_the_ID());
 				}
-			$output .= '</div><!--./middle-->';	
+			$output .= '</div>';	
 		}
-	$output .= '</div><!--./testimonial-unit-->';
+	$output .= '</div>';
 	return $output;
 }
 function element_print ($e_id, $post_id) {
@@ -248,23 +248,27 @@ function element_print ($e_id, $post_id) {
 		$content = str_replace(']]>', ']]&gt;', $content);
 		$output .= '<div class="testimonial-desc">'.$content.'</div>';
 	}
-	if ($e_id == 3) {
+	elseif ($e_id == 3) {
 		if (get_post_meta( $post_id, '_mos_testimonial_oembed', true ))	{
 			$output .= '<div class="embed-responsive embed-responsive-16by9">';
 			$output .= '<iframe class="embed-responsive-item" src="'.get_post_meta( $post_id, '_mos_testimonial_oembed', true ).'"></iframe>';
 			$output .= '</div>'; 
 		}
 	}
-	if ($e_id == 4) {
-		$output = '<h3 class="testimonial-title">' . get_the_title($post_id) . '</h3>';
+	elseif ($e_id == 4) {
+		$url = get_post_meta( $post_id, $key = '_mos_testimonial_url', true );
+		if ($url)
+			$output = '<a href="'.$url.'"><h3 class="testimonial-title">' . get_the_title($post_id) . '</h3></a>';
+		else
+			$output = '<h3 class="testimonial-title">' . get_the_title($post_id) . '</h3>';
 	}
-	if ($e_id == 5) {
+	elseif ($e_id == 5) {
 		$output .= '<span class="testimonial-designation">'.get_post_meta( $post_id, '_mos_testimonial_designation', true ).'</span>'; 
 	}
-	if ($e_id == 6) {
+	elseif ($e_id == 6) {
 		$output .= '<span class="testimonial-rating">'.get_post_meta( $post_id, '_mos_testimonial_rating', true ).'</span>';
 	}
-	if ($e_id == 7) {
+	elseif ($e_id == 7) {
 		$content_post = get_post($post_id);
 		$content = $content_post->post_content;
 		$content = apply_filters('the_content', $content);
