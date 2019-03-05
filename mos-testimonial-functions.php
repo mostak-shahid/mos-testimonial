@@ -166,7 +166,7 @@ function testimonial_func( $atts = array(), $content = '' ) {
 		if ($atts['view'] == 'block') $html .= '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
 		while ( $query->have_posts() ) : $query->the_post();			
 
-			$html .= testimonial_print ( get_the_ID() );
+			$html .= testimonial_print ( get_the_ID(), $atts['template'] );
 
 			$n++;
 			if ($n % $single_col == 0 AND $n < $total_post AND $atts['view'] == 'block') $html .= '</div><!--/.mos-testimonial-col-'.$atts['grid'] . '-->' . '<div class="mos-testimonial-col-'.$atts['grid'] . '">';
@@ -211,24 +211,60 @@ function testimonial_func( $atts = array(), $content = '' ) {
 	return $html;
 }
 add_shortcode( 'testimonials', 'testimonial_func' );
-function testimonial_print ($post_id) {
+function testimonial_print ($post_id, $template) {
 	$options = get_option( 'mos_testimonial_options' );
 	$output = '';
 	$disable = $header = $main = $left = $right = $footer = array();
 	$elements = array('plasbo', 'Feature Image', 'Content', 'Video', 'Title', 'Designation', 'Rating', 'Excerpt');
-	foreach ($options["custom-template"] as $value) {
-		$slice = explode(',', $value);
-		if ($slice[0] == 'disable') $disable[] = $slice[1];
-		elseif ($slice[0] == 'header') $header[] = $slice[1];
-		elseif ($slice[0] == 'main') $main[] = $slice[1];
-		elseif ($slice[0] == 'left') $left[] = $slice[1];
-		elseif ($slice[0] == 'right') $right[] = $slice[1];
-		elseif ($slice[0] == 'footer') $footer[] = $slice[1];
+	if ($template == "template-1") {
+		$main = array(1,2,3,4,5,6);
 	}
+	elseif ($template == "template-2") {
+		$main = array(1,7,3,4,5,6);
+	}
+	else {
+		foreach ($options[$template] as $value) {
+			$slice = explode(',', $value);
+			if ($slice[0] == 'disable') $disable[] = $slice[1];
+			elseif ($slice[0] == 'header') $header[] = $slice[1];
+			elseif ($slice[0] == 'left') $left[] = $slice[1];
+			elseif ($slice[0] == 'main') $main[] = $slice[1];
+			elseif ($slice[0] == 'right') $right[] = $slice[1];
+			elseif ($slice[0] == 'footer') $footer[] = $slice[1];
+		}
+	} 
 	$output .= '<div class="testimonial-unit">'; 
+		if (sizeof($header)) {
+			$output .= '<div class="mos-testimonial-header">';
+				foreach ($header as $value) {
+					$output .= element_print ($value, get_the_ID());
+				}
+			$output .= '</div>';	
+		}
+		if (sizeof($left)) {
+			$output .= '<div class="mos-testimonial-left">';
+				foreach ($left as $value) {
+					$output .= element_print ($value, get_the_ID());
+				}
+			$output .= '</div>';	
+		}
 		if (sizeof($main)) {
-			$output .= '<div class="middle">';
+			$output .= '<div class="mos-testimonial-middle">';
 				foreach ($main as $value) {
+					$output .= element_print ($value, get_the_ID());
+				}
+			$output .= '</div>';	
+		}
+		if (sizeof($right)) {
+			$output .= '<div class="mos-testimonial-right">';
+				foreach ($right as $value) {
+					$output .= element_print ($value, get_the_ID());
+				}
+			$output .= '</div>';	
+		}
+		if (sizeof($footer)) {
+			$output .= '<div class="mos-testimonial-footer">';
+				foreach ($footer as $value) {
 					$output .= element_print ($value, get_the_ID());
 				}
 			$output .= '</div>';	

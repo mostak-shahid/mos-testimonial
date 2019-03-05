@@ -43,22 +43,9 @@ add_action('admin_init', 'mos_testimonial_redirect');
  
 function mos_testimonial_activate() {
     $mos_testimonial_options = array();
-    $mos_testimonial_options['template'][1]['top_con'] = '';
-    $mos_testimonial_options['template'][1]['mid_lef_con'] = '';
-    $mos_testimonial_options['template'][1]['mid_cen_con'] = 'testimonial_image | testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
-    $mos_testimonial_options['template'][1]['mid_rig_con'] = '';
-    $mos_testimonial_options['template'][1]['bot_con'] = '';
-    $mos_testimonial_options['template'][2]['top_con'] = '';
-    $mos_testimonial_options['template'][2]['mid_lef_con'] = 'testimonial_image';
-    $mos_testimonial_options['template'][2]['mid_cen_con'] = 'testimonial_content | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
-    $mos_testimonial_options['template'][2]['mid_rig_con'] = '';
-    $mos_testimonial_options['template'][2]['bot_con'] = '';
-    $mos_testimonial_options['template'][3]['top_con'] = '';
-    $mos_testimonial_options['template'][3]['mid_lef_con'] = '';
-    $mos_testimonial_options['template'][3]['mid_cen_con'] = 'testimonial_image | testimonial_excerpt | testimonial_video | testimonial_title | testimonial_designation | testimonial_rating';
-    $mos_testimonial_options['template'][3]['mid_rig_con'] = '';
-    $mos_testimonial_options['template'][3]['bot_con'] = '';
-    update_option( 'mos_testimonial_templates', $mos_testimonial_options, false );
+    $mos_testimonial_options['custom-template-1'] = array("disable,1", "disable,2", "disable,3", "disable,4", "disable,5", "disable,6", "disable,7" );
+    $mos_testimonial_options['custom-template-2'] = array("disable,1", "disable,2", "disable,3", "disable,4", "disable,5", "disable,6", "disable,7" );
+    update_option( 'mos_testimonial_options', $mos_testimonial_options, false );
     add_option('mos_testimonial_do_activation_redirect', true);
 }
  
