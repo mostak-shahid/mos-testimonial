@@ -3,15 +3,15 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-[id^="mos-testimonial-"].mos-testimonial-container {
+[id^="mos-testimonial-"].mos-testimonial-container.block-view {
     margin-right: -15px;
     margin-left: -15px;
 }
-[id^="mos-testimonial-"].mos-testimonial-container:after, [id^="mos-testimonial-"].mos-testimonial-container:before {
+[id^="mos-testimonial-"].mos-testimonial-container.block-view:after, [id^="mos-testimonial-"].mos-testimonial-container.block-view:before {
     display: table;
     content: " ";
 }
-[id^="mos-testimonial-"].mos-testimonial-container:after {
+[id^="mos-testimonial-"].mos-testimonial-container.block-view:after {
     clear: both;
 }
 [id^="mos-testimonial-"] [class^="mos-testimonial-col-"] {
