@@ -8,7 +8,7 @@ Author: Md. Mostak Shahid
 
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+  exit; // Exit if accessed directly.
 }
 
 // Define MOS_TESTIMONIAL_FILE.
