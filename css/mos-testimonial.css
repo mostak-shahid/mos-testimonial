@@ -22,17 +22,19 @@
     float: left;
     width: 100%;
 }
-[id^="mos-testimonial-"] .mos-testimonial-col-2 {
-  width: 50%;
-}
-[id^="mos-testimonial-"] .mos-testimonial-col-3 {
-  width: 33.33333333%;
-}
-[id^="mos-testimonial-"] .mos-testimonial-col-4 {
-  width: 25%;
-}
-[id^="mos-testimonial-"] .mos-testimonial-col-5 {
-  width: 20%;
+@media (min-width:992px){
+  [id^="mos-testimonial-"] .mos-testimonial-col-2 {
+    width: 50%;
+  }
+  [id^="mos-testimonial-"] .mos-testimonial-col-3 {
+    width: 33.33333333%;
+  }
+  [id^="mos-testimonial-"] .mos-testimonial-col-4 {
+    width: 25%;
+  }
+  [id^="mos-testimonial-"] .mos-testimonial-col-5 {
+    width: 20%;
+  }
 }
 .embed-responsive {
   position: relative;
